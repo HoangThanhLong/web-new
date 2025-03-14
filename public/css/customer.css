@@ -1,0 +1,67 @@
+.submenu {
+    display: none;
+}
+
+.submenu.active {
+    display: block;
+}
+
+.arrow-icon {
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Định dạng menu chính */
+.menu-item > a {
+    display: block;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    color: white;
+    text-decoration: none;
+    background-color: #333;
+    transition: background-color 0.3s ease-in-out;
+}
+
+/* Hover chỉ áp dụng cho chính nó, không ảnh hưởng submenu */
+.menu-item > a:hover {
+    background-color: #3498db; /* Màu xanh sáng */
+    color: white;
+}
+
+/* Định dạng submenu */
+.submenu {
+    display: none;
+    padding-left: 20px;
+    background: #444; /* Màu nền submenu khác biệt */
+}
+
+/* Hover cho submenu (chỉ áp dụng riêng lẻ) */
+.submenu li a {
+    display: block;
+    padding: 5px 10px;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.submenu li a:hover {
+    background-color: #2980b9; /* Màu xanh sáng cho submenu */
+}
+
+.menu-item i {
+    padding-right: 10px;
+}
+
+/*navbar top*/
+nav.navbar.navbar-expand-md.navbar-light.bg-white.shadow-sm {
+    padding: 10px 20px;
+}
+.navbar-nav i {
+    padding-right: 10px;
+}
+
+/*button*/
+.btn-sm {
+    padding: 5px !important;
+    font-size: 12px !important;
+}

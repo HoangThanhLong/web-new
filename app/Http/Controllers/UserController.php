@@ -14,7 +14,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        return response()->json(User::all());
+        $users = User::paginate(10);
+        return view('backend.users.index', compact('users'));
     }
 
     /**
@@ -37,7 +38,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::findOrFail($id);
+        return view('backend.users.view', compact('user'));
     }
 
     /**
@@ -49,7 +51,25 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // Validate dữ liệu
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $id,
+        ], [
+            'name.required' => 'Tên không được để trống.',
+            'email.required' => 'Email không được để trống.',
+            'email.email' => 'Email không đúng định dạng.',
+            'email.unique' => 'Email này đã tồn tại.',
+        ]);
+
+        // Cập nhật user
+        $user = User::findOrFail($id);
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+        ]);
+
+        return redirect()->route('users.index')->with('success', 'Cập nhật thành công!');
     }
 
     /**
@@ -60,6 +80,13 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        User::destroy($id);
+        return redirect()->route('users.index')->with('success', 'Xóa thành công!');
+    }
+
+    public function edit($id)
+    {
+        $user = User::findOrFail($id);
+        return view('backend.users.edit', compact('user'));
     }
 }
