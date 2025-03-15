@@ -1,57 +1,25 @@
-.submenu {
-    display: none;
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: unset !important;
 }
-
-.submenu.active {
-    display: block;
-}
-
-.arrow-icon {
-    transition: transform 0.3s ease-in-out;
-}
-
-/* Định dạng menu chính */
-.menu-item > a {
-    display: block;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-    color: white;
+.sidebar a {
     text-decoration: none;
-    background-color: #333;
-    transition: background-color 0.3s ease-in-out;
+}
+.sidebar ul li a {
+    display: block; /* Để toàn bộ hàng có thể bấm được */
+    padding: 8px 12px; /* Khoảng cách nội dung */
+    border-radius: 5px; /* Bo góc nhẹ */
+    transition: background-color 0.3s ease; /* Hiệu ứng mượt */
 }
 
-/* Hover chỉ áp dụng cho chính nó, không ảnh hưởng submenu */
-.menu-item > a:hover {
-    background-color: #3498db; /* Màu xanh sáng */
-    color: white;
+.sidebar ul li a:hover {
+    background-color: #007bff; /* Màu xanh khi hover */
+    color: white !important; /* Đảm bảo chữ trắng */
 }
-
-/* Định dạng submenu */
-.submenu {
-    display: none;
-    padding-left: 20px;
-    background: #444; /* Màu nền submenu khác biệt */
-}
-
-/* Hover cho submenu (chỉ áp dụng riêng lẻ) */
-.submenu li a {
-    display: block;
-    padding: 5px 10px;
-    color: white;
-    text-decoration: none;
-    transition: background-color 0.3s ease-in-out;
-}
-
-.submenu li a:hover {
-    background-color: #2980b9; /* Màu xanh sáng cho submenu */
-}
-
-.menu-item i {
-    padding-right: 10px;
-}
-
 /*navbar top*/
 nav.navbar.navbar-expand-md.navbar-light.bg-white.shadow-sm {
     padding: 10px 20px;
@@ -60,8 +28,36 @@ nav.navbar.navbar-expand-md.navbar-light.bg-white.shadow-sm {
     padding-right: 10px;
 }
 
+.dropdown-item:hover {
+    background-color: #007bff; /* Màu xanh khi hover */
+    color: white !important; /* Đảm bảo chữ trắng */
+}
+
+a.dropdown-item {
+    /* Bo góc nhẹ */
+    transition: background-color 0.3s ease; /* Hiệu ứng mượt */
+}
+
 /*button*/
 .btn-sm {
     padding: 5px !important;
     font-size: 12px !important;
+}
+
+.d-flex {
+    display: flex;
+    min-height: 100vh;
+}
+
+.main_content {
+    margin-left: 250px;
+}
+
+@media (max-width: 768px) {
+    .main_content {
+        margin-left: unset;
+    }
+    .dropdown-menu.dropdown-menu-end.show {
+        text-align: right;
+    }
 }

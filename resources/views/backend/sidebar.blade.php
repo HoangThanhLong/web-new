@@ -1,41 +1,58 @@
-<aside style="width: 250px; background: #333; color: white; height: 100vh; position: fixed;">
-    <h3 style="text-align: center; padding: 10px 0;">Admin Panel</h3>
-    <ul style="list-style: none; padding: 0;">
-        <li class="menu-item">
-            <a href="{{ route('dashboard') }}" style="color: white; text-decoration: none;"><i class="fa-solid fa-gauge"></i>Dashboard</a>
-        </li>
+<!-- Sidebar -->
+<div class="sidebar d-none d-md-block bg-dark text-white p-3">
+    <h5 class="mb-3"><a class="text-white" href="{{ url('/') }}">Hoàng Thanh</a></h5>
+    <ul class="list-unstyled">
+        <li><a href="{{ route('dashboard') }}" class="text-white"><i class="fas fa-home me-2"></i> Dashboard</a></li>
+        <li><a href="{{ route('users.index') }}" class="text-white"><i class="fas fa-users me-2"></i> Quản lý người dùng</a></li>
 
-        <!-- Quản lý người dùng -->
-        <li class="menu-item">
-            <a href="{{ route('users.index') }}" style="color: white; text-decoration: none;"><i class="fa-solid fa-users"></i>Quản lý người dùng</a>
-        </li>
-
-        <!-- Dropdown Quản lý bài viết -->
-        <li class="menu-item">
-            <a href="#" class="menu-toggle" data-menu="postDropdown">
-                <i class="fa-solid fa-blog"></i>Quản lý bài viết
-                <i class="arrow-icon fas fa-chevron-up"></i>
+        <!-- Quản lý bài viết -->
+        <li>
+            <a href="#submenu1" data-bs-toggle="collapse" class="text-white">
+                <i class="fas fa-edit me-2"></i> Quản lý bài viết <i class="fas fa-chevron-down ms-2"></i>
             </a>
-            <ul id="postDropdown" class="submenu" style="display: none;">
-                <li id="post">
-                    <a href="{{ route('posts.index') }}">Bài viết</a>
-                </li>
-                <li id="categoryPost">
-                    <a href="{{ route('categories.index') }}">Danh mục</a>
-                </li>
+            <ul class="collapse list-unstyled ps-3" id="submenu1">
+                <li><a href="{{ route('posts.index') }}" class="text-white"><i class="fas fa-file-alt me-2"></i> Bài viết</a></li>
+                <li><a href="{{ route('categories.index') }}" class="text-white"><i class="fas fa-tags me-2"></i> Danh mục</a></li>
             </ul>
         </li>
 
-
-        <!-- Đăng xuất -->
-        <li class="menu-item">
-            <a href="{{ route('logout') }}" style="color: white; text-decoration: none;"
+        <li><a href="{{ route('logout') }}" class="text-white"
                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                <i class="fa-solid fa-power-off"></i>Đăng Xuất
-            </a>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                <i class="fa-solid fa-power-off"></i> Đăng xuất </a></li>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+            @csrf
+        </form>
+    </ul>
+</div>
+
+<!-- Offcanvas Sidebar (Chỉ hiện trên mobile) -->
+<div class="offcanvas offcanvas-start bg-dark text-white" id="mobileSidebar">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title">Menu</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body">
+        <ul class="list-unstyled">
+            <li><a href="#" class="text-white"><i class="fas fa-home me-2"></i> Dashboard</a></li>
+            <li><a href="#" class="text-white"><i class="fas fa-users me-2"></i> Quản lý người dùng</a></li>
+
+            <!-- Quản lý bài viết -->
+            <li>
+                <a href="#submenu2" data-bs-toggle="collapse" class="text-white">
+                    <i class="fas fa-edit me-2"></i> Quản lý bài viết <i class="fas fa-chevron-down ms-2"></i>
+                </a>
+                <ul class="collapse list-unstyled ps-3" id="submenu2">
+                    <li><a href="#" class="text-white"><i class="fas fa-file-alt me-2"></i> Bài viết</a></li>
+                    <li><a href="#" class="text-white"><i class="fas fa-tags me-2"></i> Danh mục</a></li>
+                </ul>
+            </li>
+
+            <li><a href="{{ route('logout') }}" class="text-white"
+                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <i class="fa-solid fa-power-off"></i> Đăng xuất </a></li>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                 @csrf
             </form>
-        </li>
-    </ul>
-</aside>
+        </ul>
+    </div>
+</div>

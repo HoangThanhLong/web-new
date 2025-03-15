@@ -35,7 +35,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
     Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
-    Route::get('/list', [UserController::class, 'index'])->name('users.index');
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('users/{id}/view', [UserController::class, 'show'])->name('users.view');
     Route::get('users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::put('users/{id}', [UserController::class, 'update'])->name('users.update');

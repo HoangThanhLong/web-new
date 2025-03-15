@@ -1,8 +1,7 @@
-
 @include('backend.header')
 
 @include('backend.sidebar') <!-- Thêm sidebar -->
-<main>
+<main class="main_content"> <!-- Nội dung chính -->
     @yield('content')
 </main>
 
