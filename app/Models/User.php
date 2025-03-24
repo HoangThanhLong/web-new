@@ -10,6 +10,10 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
+    const ROLE_ADMIN = "admin";
+    const ROLE_EDITOR = "editor";
+    const ROLE_MEMBER = "member";
+
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
@@ -41,4 +45,26 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function hasRole($role)
+    {
+        return $this->role === $role;
+    }
+
+    public static function getRole()
+    {
+        return [
+            self::ROLE_ADMIN => "Admin",
+            self::ROLE_EDITOR => "Biên tập viên",
+            self::ROLE_MEMBER => "Thành viên",
+        ];
+    }
+
+    public static function getRoleLabel($value = '')
+    {
+        $array = self::getRole();
+        if ($value === null || !array_key_exists($value, $array))
+            return '';
+        return $array[$value];
+    }
 }
