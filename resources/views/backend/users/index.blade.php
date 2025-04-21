@@ -10,6 +10,7 @@
             <thead>
             <tr>
                 <th scope="col">ID</th>
+                <th scope="col">Ảnh đại diện</th>
                 <th scope="col">Tên</th>
                 <th scope="col">Email</th>
                 <th scope="col">Role</th>
@@ -20,6 +21,13 @@
             @foreach($users as $user)
                 <tr>
                     <td>{{ $user->id }}</td>
+                    <td>
+                        @if($user->avatar)
+                            <img src="{{ asset('storage/' . $user->avatar) }}" width="50" height="50" class="rounded-circle" alt="Avatar" />
+                        @else
+                            <img src="{{ asset('default-avatar.png') }}" width="100" height="100" class="rounded-circle" alt="Avatar">
+                        @endif
+                    </td>
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
                     <td>

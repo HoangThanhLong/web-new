@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -55,20 +56,39 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ], [
             'name.required' => 'Tên không được để trống.',
             'email.required' => 'Email không được để trống.',
             'email.email' => 'Email không đúng định dạng.',
             'email.unique' => 'Email này đã tồn tại.',
+            'avatar.image' => 'File phải là hình ảnh.',
+            'avatar.mimes' => 'Ảnh phải có định dạng jpeg, png, jpg hoặc gif.',
+            'avatar.max' => 'Ảnh không được vượt quá 2MB.',
         ]);
 
         // Cập nhật user
         $user = User::findOrFail($id);
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-        ]);
+        $user->name = $request->name;
+        $user->email = $request->email;
 
+        // Xử lý ảnh đại diện nếu có upload
+        if ($request->hasFile('avatar')) {
+            $file = $request->file('avatar');
+            $extension = $file->getClientOriginalExtension();
+            $filename = $user->id . '.' . $extension;
+
+            // Xoá avatar cũ nếu có
+            if ($user->avatar && Storage::exists('public/avatars/' . basename($user->avatar))) {
+                Storage::delete('public/avatars/' . basename($user->avatar));
+            }
+
+            // Lưu file mới
+            $file->storeAs('public/avatars', $filename);
+            $user->avatar = 'avatars/' . $filename; // lưu path tương đối (không cần 'storage/' ở đây)
+        }
+
+        $user->save();
         return redirect()->route('users.index')->with('success', 'Cập nhật thành công!');
     }
 
@@ -80,8 +100,15 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        User::destroy($id);
-        return redirect()->route('users.index')->with('success', 'Xóa thành công!');
+        $user = User::findOrFail($id);
+
+        // Xoá avatar nếu có
+        if ($user->avatar && Storage::exists('public/' . $user->avatar)) {
+            Storage::delete('public/' . $user->avatar);
+        }
+
+        $user->delete();
+        return redirect()->route('users.index')->with('success', 'Xoá người dùng thành công!');
     }
 
     public function edit($id)

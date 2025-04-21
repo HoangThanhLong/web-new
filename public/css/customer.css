@@ -49,6 +49,10 @@ a.dropdown-item {
     min-height: 100vh;
 }
 
+.display-flex {
+    display: flex;
+}
+
 .main_content {
     margin-left: 250px;
 }

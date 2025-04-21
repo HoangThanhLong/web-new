@@ -25,6 +25,8 @@
                 </ul>
             </li>
         @endif
+        <li><a href="{{ route('media.index')  }}" class="text-white"><i class="fas fa-users me-2"></i> Quản lý
+                media</a></li>
 
         <li><a href="{{ route('logout') }}" class="text-white"
                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
