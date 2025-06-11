@@ -57,11 +57,22 @@ a.dropdown-item {
     margin-left: 250px;
 }
 
+#typewriter {
+
+}
+
+.cursor {
+    border-left: 4px solid white;
+}
 @media (max-width: 768px) {
     .main_content {
         margin-left: unset;
     }
     .dropdown-menu.dropdown-menu-end.show {
         text-align: right;
+    }
+    .table td, .table th {
+        min-width: 120px; /* đảm bảo mỗi cột có độ rộng tối thiểu */
+        vertical-align: middle;
     }
 }

@@ -18,9 +18,21 @@
             @csrf
 
             <div class="mb-2">
-                {{-- Preview nếu là ảnh --}}
-                <img id="mediaPreview" src="https://via.placeholder.com/150x150?text=Preview" alt="Preview"
+                {{-- Preview ảnh --}}
+                <img id="mediaPreviewImage" src="#" alt="Image Preview"
                      style="max-width: 150px; display: none;" class="rounded">
+
+                {{-- Preview video --}}
+                <video id="mediaPreviewVideo" controls style="max-width: 300px; display: none;">
+                    <source src="#" type="video/mp4">
+                    Trình duyệt không hỗ trợ xem video.
+                </video>
+
+                {{-- Preview file (pdf, doc, ...) --}}
+                <div id="mediaPreviewFile" style="display: none;">
+                    <i class="fa-solid fa-file-lines fa-2x text-secondary"></i>
+                    <span id="fileName" class="ms-2"></span>
+                </div>
             </div>
 
             <div class="input-group">
@@ -41,7 +53,8 @@
                 <div class="col-xl-3 col-md-4 col-6 mb-4">
                     <div class="card">
                         @if(Str::startsWith($file->mime_type, 'image/'))
-                            <img src="{{ Storage::url($file->filename) }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                            <img src="{{ Storage::url($file->filename) }}" class="card-img-top"
+                                 style="height: 200px; object-fit: cover;">
                         @elseif(Str::startsWith($file->mime_type, 'video/'))
                             <video src="{{ Storage::url($file->filename) }}" style="height: 200px" autoplay></video>
                         @else
@@ -53,21 +66,20 @@
                                 </p>
                             </div>
                         @endif
-                        <div class="card-footer">
-
-                            <form action="{{ route('media.destroy', $file) }}" method="POST" onsubmit="return confirm('Xoá file?')">
+                        <div class="card-footer display-flex gap-1">
+                            <button class="btn btn-sm btn-info w-50">
+                                <i class="fa-solid fa-eye d-inline d-md-none"></i> <!-- Icon trên điện thoại -->
+                                <span class="d-none d-md-inline">Chi tiết</span> <!-- Chữ trên PC -->
+                            </button>
+                            <form action="{{ route('media.destroy', $file) }}" method="POST"
+                                  class="delete-form-media w-50">
                                 @csrf
                                 @method('DELETE')
-                                <div class="display-flex gap-1">
-                                    <button class="btn btn-sm btn-info w-50">
-                                        <i class="fa-solid fa-eye d-inline d-md-none"></i> <!-- Icon trên điện thoại -->
-                                        <span class="d-none d-md-inline">Chi tiết</span> <!-- Chữ trên PC -->
-                                    </button>
-                                    <button class="btn btn-sm btn-danger w-50">
-                                        <i class="fas fa-trash-alt d-inline d-md-none"></i> <!-- Icon trên điện thoại -->
-                                        <span class="d-none d-md-inline">Xoá</span>
-                                    </button>
-                                </div>
+
+                                <button type="submit" class="btn btn-sm btn-danger w-100 delete-btn">
+                                    <i class="fas fa-trash-alt d-inline d-md-none"></i>
+                                    <span class="d-none d-md-inline">Xoá</span>
+                                </button>
                             </form>
                         </div>
                     </div>
@@ -78,3 +90,36 @@
         {{ $media->links('pagination::bootstrap-5') }}
     </div>
 @endsection
+<style>
+    .delete-form-media {
+        margin-bottom: 0;
+    }
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const deleteForms = document.querySelectorAll('.delete-form');
+
+        deleteForms.forEach(form => {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault(); // Ngăn submit mặc định
+
+                Swal.fire({
+                    title: 'Bạn có chắc muốn xoá?',
+                    text: "Hành động này không thể hoàn tác!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Xoá',
+                    cancelButtonText: 'Huỷ'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit(); // Submit nếu xác nhận
+                    }
+                });
+            });
+        });
+    });
+</script>
+
+

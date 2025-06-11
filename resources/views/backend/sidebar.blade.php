@@ -1,70 +1,112 @@
 @php
     $role = Auth::user()->role;
 @endphp
-<!-- Sidebar -->
-<div class="sidebar d-none d-md-block bg-dark text-white p-3">
-    <h5 class="mb-3"><a class="text-white" href="{{ url('/') }}">Hoàng Thanh</a></h5>
-    <ul class="list-unstyled">
-        <li><a href="{{ route('dashboard') }}" class="text-white"><i class="fas fa-home me-2"></i> Dashboard</a></li>
-        @if($role === 'admin')
-            <li><a href="{{ route('users.index')  }}" class="text-white"><i class="fas fa-users me-2"></i> Quản lý
-                    người dùng</a></li>
-        @endif
 
-    <!-- Quản lý bài viết -->
-        @if(in_array($role, ['admin', 'editor']))
-            <li>
-                <a href="#submenu1" data-bs-toggle="collapse" class="text-white">
-                    <i class="fas fa-edit me-2"></i> Quản lý bài viết <i class="fas fa-chevron-down ms-2"></i>
+<!-- Sidebar cho màn hình lớn -->
+<nav class="sidebar d-none d-md-block bg-dark text-white vh-100 p-3">
+    <a href="{{ url('/') }}" class="navbar-brand text-white fs-4 fw-bold d-block mb-4" style="text-align: center; padding-top: 10px">VSEA</a>
+    <ul class="nav flex-column">
+        <li class="nav-item mb-2">
+            <a class="nav-link text-white" href="{{ route('dashboard') }}">
+                <i class="fas fa-home me-2"></i> Dashboard
+            </a>
+        </li>
+
+        @if($role === 'admin')
+            <li class="nav-item mb-2">
+                <a class="nav-link text-white" href="{{ route('users.index') }}">
+                    <i class="fas fa-users me-2"></i> Quản lý người dùng
                 </a>
-                <ul class="collapse list-unstyled ps-3" id="submenu1">
-                    <li><a href="{{ route('posts.index') }}" class="text-white"><i class="fas fa-file-alt me-2"></i> Bài
-                            viết</a></li>
-                    <li><a href="{{ route('categories.index') }}" class="text-white"><i class="fas fa-tags me-2"></i>
-                            Danh mục</a></li>
-                </ul>
             </li>
         @endif
-        <li><a href="{{ route('media.index')  }}" class="text-white"><i class="fas fa-users me-2"></i> Quản lý
-                media</a></li>
 
-        <li><a href="{{ route('logout') }}" class="text-white"
+        @if(in_array($role, ['admin', 'editor']))
+            <li class="nav-item mb-2">
+                <a class="nav-link text-white collapsed" data-bs-toggle="collapse" href="#postMenu" role="button" aria-expanded="false" aria-controls="postMenu">
+                    <i class="fas fa-edit me-2"></i> Quản lý bài viết <i class="fas fa-chevron-down float-end"></i>
+                </a>
+                <div class="collapse" id="postMenu">
+                    <ul class="nav flex-column ms-3">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{{ route('posts.index') }}">
+                                <i class="fas fa-file-alt me-2"></i> Bài viết
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{{ route('categories.index') }}">
+                                <i class="fas fa-tags me-2"></i> Danh mục
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        @endif
+
+        <li class="nav-item mb-2">
+            <a class="nav-link text-white" href="{{ route('media.index') }}">
+                <i class="fa-solid fa-photo-film me-2"></i> Quản lý media
+            </a>
+        </li>
+
+        <li class="nav-item mt-3">
+            <a class="nav-link text-white" href="{{ route('logout') }}"
                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                <i class="fa-solid fa-power-off"></i> Đăng xuất </a></li>
-        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-            @csrf
-        </form>
+                <i class="fa-solid fa-power-off me-2"></i> Đăng xuất
+            </a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                @csrf
+            </form>
+        </li>
     </ul>
-</div>
+</nav>
 
-<!-- Offcanvas Sidebar (Chỉ hiện trên mobile) -->
+<!-- Offcanvas cho mobile -->
 <div class="offcanvas offcanvas-start bg-dark text-white" id="mobileSidebar">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title">Menu</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
     </div>
     <div class="offcanvas-body">
-        <ul class="list-unstyled">
-            <li><a href="#" class="text-white"><i class="fas fa-home me-2"></i> Dashboard</a></li>
-            <li><a href="#" class="text-white"><i class="fas fa-users me-2"></i> Quản lý người dùng</a></li>
-
-            <!-- Quản lý bài viết -->
-            <li>
-                <a href="#submenu2" data-bs-toggle="collapse" class="text-white">
-                    <i class="fas fa-edit me-2"></i> Quản lý bài viết <i class="fas fa-chevron-down ms-2"></i>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link text-white" href="{{ route('dashboard') }}">
+                    <i class="fas fa-home me-2"></i> Dashboard
                 </a>
-                <ul class="collapse list-unstyled ps-3" id="submenu2">
-                    <li><a href="#" class="text-white"><i class="fas fa-file-alt me-2"></i> Bài viết</a></li>
-                    <li><a href="#" class="text-white"><i class="fas fa-tags me-2"></i> Danh mục</a></li>
-                </ul>
             </li>
-
-            <li><a href="{{ route('logout') }}" class="text-white"
+            @if($role === 'admin')
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{{ route('users.index') }}">
+                        <i class="fas fa-users me-2"></i> Quản lý người dùng
+                    </a>
+                </li>
+            @endif
+            @if(in_array($role, ['admin', 'editor']))
+                <li class="nav-item">
+                    <a class="nav-link text-white collapsed" data-bs-toggle="collapse" href="#postMenuMobile" role="button" aria-expanded="false">
+                        <i class="fas fa-edit me-2"></i> Quản lý bài viết <i class="fas fa-chevron-down float-end"></i>
+                    </a>
+                    <div class="collapse" id="postMenuMobile">
+                        <ul class="nav flex-column ms-3">
+                            <li><a class="nav-link text-white" href="{{ route('posts.index') }}"><i class="fas fa-file-alt me-2"></i> Bài viết</a></li>
+                            <li><a class="nav-link text-white" href="{{ route('categories.index') }}"><i class="fas fa-tags me-2"></i> Danh mục</a></li>
+                        </ul>
+                    </div>
+                </li>
+            @endif
+            <li class="nav-item">
+                <a class="nav-link text-white" href="{{ route('media.index') }}">
+                    <i class="fa-solid fa-photo-film me-2"></i> Quản lý media
+                </a>
+            </li>
+            <li class="nav-item mt-3">
+                <a class="nav-link text-white" href="{{ route('logout') }}"
                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    <i class="fa-solid fa-power-off"></i> Đăng xuất </a></li>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                @csrf
-            </form>
+                    <i class="fa-solid fa-power-off me-2"></i> Đăng xuất
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
+            </li>
         </ul>
     </div>
 </div>
